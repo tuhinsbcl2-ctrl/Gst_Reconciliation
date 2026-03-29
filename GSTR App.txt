@@ -1,0 +1,18 @@
+Building a desktop application to automate GST data extraction and reconciliation is a powerful project for an accountant. This tool will bridge the gap between the GST portal and your analysis dashboards. To build this, I shall need to use the GST APIs (usually via a GST Suvidha Provider or GSP) to pull data directly into your app.
+
+### 1. Technical Requirements
+- Framework: Electron or Python (PyQt/Tkinter)
+- Backend: Python (excellent for GST JSON parsing and Excel generation)
+- Database: SQLite or SQL Server
+- API Handling: Requests (Python library) to connect to GSTN/GSP endpoints
+- Data Processing: Pandas (best for GSTR-2B vs 3B reconciliations)
+- Output: Openpyxl or XlsxWriter to export reports to Excel
+
+### 2. Functional Requirements
+- Client Vault: Secure table for Client Name, GSTIN, Username, Encrypted Password/Auth Tokens
+- OTP Session Management: Module to trigger and input GST Portal OTP (valid for 6–30 days)
+- Data Scraper/Puller: Loop through selected months and download JSON data for GSTR-1, 2A, 2B, and 3B
+- Reconciliation Engine: Compare GSTR-1 vs GSTR-3B, GSTR-2B vs GSTR-3B, GSTR-2A vs GSTR-2B
+
+### 3. Compliance Note
+To connect a custom app to the GST Portal, you need to use a GSP (GST Suvidha Provider) like ClearTax, Cygnet, or Masters India for API Key authentication.
