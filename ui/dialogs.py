@@ -26,6 +26,7 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QVBoxLayout,
+    QWidget,
 )
 
 
@@ -263,7 +264,7 @@ class ReportOptionsDialog(QDialog):
         files_group = QGroupBox("Input Files")
         files_layout = QFormLayout(files_group)
         for label in file_labels:
-            row_widget = QWidget_()
+            row_widget = QWidget()
             row_layout = QHBoxLayout(row_widget)
             row_layout.setContentsMargins(0, 0, 0, 0)
             edit = QLineEdit()
@@ -319,9 +320,3 @@ class ReportOptionsDialog(QDialog):
     def get_file_paths(self) -> list[str]:
         return [e.text().strip() for e in self._file_edits]
 
-
-# ---------------------------------------------------------------------------
-# Tiny helper widget to allow row_widget inline creation in the form layout
-# ---------------------------------------------------------------------------
-
-from PyQt6.QtWidgets import QWidget as QWidget_

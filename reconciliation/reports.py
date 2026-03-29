@@ -356,13 +356,15 @@ def financial_year_summary(
     # Filter to financial year if provided
     if financial_year and COL_PERIOD in _df.columns:
         try:
-            start_year, end_year = financial_year.split("-")
+            start_year, end_suffix = financial_year.split("-")
+            start_int = int(start_year)
+            end_int = start_int + 1  # e.g. 2023 -> 2024
             # Apr-Mar spanning two calendar years
             fy_periods: list[str] = []
             for m in range(4, 13):
-                fy_periods.append(f"{start_year}-{m:02d}")
+                fy_periods.append(f"{start_int}-{m:02d}")
             for m in range(1, 4):
-                fy_periods.append(f"20{end_year}-{m:02d}")
+                fy_periods.append(f"{end_int}-{m:02d}")
             _df = _df[_df[COL_PERIOD].isin(fy_periods)]
         except Exception:
             pass  # fall through with unfiltered data

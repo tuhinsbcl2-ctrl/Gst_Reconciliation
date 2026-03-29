@@ -49,6 +49,14 @@ from ui.dialogs import (
     ReportOptionsDialog,
 )
 
+# ---------------------------------------------------------------------------
+# Page index constants
+# ---------------------------------------------------------------------------
+
+PAGE_DASHBOARD = 0
+PAGE_CLIENTS = 1
+PAGE_REPORTS = 2
+
 
 # ---------------------------------------------------------------------------
 # Palette / style constants
@@ -146,7 +154,7 @@ class MainWindow(QMainWindow):
         self._status("Ready")
 
         # Show dashboard by default
-        self._switch_page(0, self._btn_dashboard)
+        self._switch_page(PAGE_DASHBOARD, self._btn_dashboard)
 
     def _build_sidebar(self) -> QWidget:
         sidebar = QFrame()
@@ -174,11 +182,15 @@ class MainWindow(QMainWindow):
         self._btn_clients = QPushButton("  Client Management")
         self._btn_reports = QPushButton("  Reports")
 
-        for idx, btn in enumerate([self._btn_dashboard, self._btn_clients, self._btn_reports]):
+        _nav_buttons = [
+            (PAGE_DASHBOARD, self._btn_dashboard),
+            (PAGE_CLIENTS, self._btn_clients),
+            (PAGE_REPORTS, self._btn_reports),
+        ]
+        for page_idx, btn in _nav_buttons:
             btn.setStyleSheet(_SIDEBAR_STYLE)
             btn.setCheckable(False)
             btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-            page_idx = idx  # capture
             btn.clicked.connect(lambda checked, i=page_idx, b=btn: self._switch_page(i, b))
             layout.addWidget(btn)
 
@@ -229,12 +241,12 @@ class MainWindow(QMainWindow):
         quick_row.setSpacing(12)
         btn_add = QPushButton("+ Add Client")
         btn_add.setStyleSheet(_REPORT_BTN_STYLE)
-        btn_add.clicked.connect(lambda: self._switch_page(1, self._btn_clients))
+        btn_add.clicked.connect(lambda: self._switch_page(PAGE_CLIENTS, self._btn_clients))
         quick_row.addWidget(btn_add)
 
         btn_reco = QPushButton("Run Reconciliation")
         btn_reco.setStyleSheet(_REPORT_BTN_STYLE)
-        btn_reco.clicked.connect(lambda: self._switch_page(2, self._btn_reports))
+        btn_reco.clicked.connect(lambda: self._switch_page(PAGE_REPORTS, self._btn_reports))
         quick_row.addWidget(btn_reco)
         quick_row.addStretch()
         layout.addLayout(quick_row)
@@ -595,11 +607,11 @@ class MainWindow(QMainWindow):
             btn.setStyle(btn.style())  # force style refresh
 
         # Refresh client table whenever Clients page is shown
-        if index == 1:
+        if index == PAGE_CLIENTS:
             self._refresh_client_table()
 
         # Also update stat card when switching to dashboard
-        if index == 0:
+        if index == PAGE_DASHBOARD:
             clients = client_master.get_all_clients()
             self._stat_clients_label.setText(str(len(clients)))
 
